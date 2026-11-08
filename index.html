@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="GridSense SmartHack XI pitch for the PPC Energie challenge.">
+<title>GridSense · SmartHack XI Pitch</title>
+<link rel="preload" href="slides/slide-01.jpg" as="image">
+<style>
+:root{color-scheme:dark;font:16px/1.45 system-ui,sans-serif;--border:#26354a;--muted:#b2c2d8;--blue:#2563eb}
+*{box-sizing:border-box}
+body{margin:0;background:#0b1423;color:#f4f7fc}
+header,main{width:min(100% - 2rem,92rem);margin-inline:auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.05rem 0}
+.brand{display:flex;align-items:center;gap:.65rem}
+.mark{display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:.55rem;background:var(--blue);font-size:1.3rem}
+h1{font-size:1.05rem;line-height:1.1;margin:0}
+.brand small{color:var(--muted);font-size:.78rem}
+a,button,select{color:inherit;font:inherit}
+a.download,button,select{border:1px solid var(--border);border-radius:.5rem;padding:.5rem .75rem;background:#142238}
+a.download{text-decoration:none;white-space:nowrap}
+a:hover,button:hover,select:hover{border-color:#6d9fff}
+:focus-visible{outline:2px solid #90b9ff;outline-offset:3px}
+button,select{cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+.deck{margin:auto;width:min(100%,calc((100svh - 9rem) * 16 / 9));min-width:min(100%,36rem)}
+figure{margin:0 0 1rem;line-height:0}
+figure img{width:100%;height:auto;display:block;border-radius:.65rem;border:1px solid var(--border);background:#e9edf5}
+.controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem;margin:1rem 0}
+.controls[hidden],figure[hidden]{display:none}
+.controls span{font-variant-numeric:tabular-nums;color:var(--muted);min-width:4rem;text-align:center}
+.deck:fullscreen{display:grid;align-content:center;padding:1rem;width:100%;background:#0b1423}
+.deck:fullscreen figure img{height:min(100%,calc(100dvh - 6rem));object-fit:contain;border:0}
+@media(max-width:38rem){header,main{width:calc(100% - 1rem)}.controls{font-size:.86rem}.controls select{max-width:45vw}.controls button{padding:.45rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="mark" aria-hidden="true">ϟ</span><div><h1>GridSense</h1><small>SmartHack XI · PPC Energie</small></div></div>
+  <a class="download" href="gridsense-smarthack-pitch.pdf" download>Download PDF</a>
+</header>
+<main aria-label="GridSense pitch deck">
+  <div class="deck" id="deck">
+    <div id="slides">
+      <figure id="slide-1"><img src="slides/slide-01.jpg" width="1600" height="900" alt="GridSense: Free electricity hours, announced before the auction."></figure>
+      <figure id="slide-2"><img loading="lazy" src="slides/slide-02.jpg" width="1600" height="900" alt="The problem: Which hours can PPC promise customers as free, before the auction clears?"></figure>
+      <figure id="slide-3"><img loading="lazy" src="slides/slide-03.jpg" width="1600" height="900" alt="What GridSense does: forecast, announce, confirm or cancel, and explain."></figure>
+      <figure id="slide-4"><img loading="lazy" src="slides/slide-04.jpg" width="1600" height="900" alt="The agent’s loop: perceive, estimate, decide, act."></figure>
+      <figure id="slide-5"><img loading="lazy" src="slides/slide-05.jpg" width="1600" height="900" alt="Data: public electricity prices, archived weather forecasts, grid data and calendar features."></figure>
+      <figure id="slide-6"><img loading="lazy" src="slides/slide-06.jpg" width="1600" height="900" alt="Validation: comparison of LightGBM and the climatology baseline."></figure>
+      <figure id="slide-7"><img loading="lazy" src="slides/slide-07.jpg" width="1600" height="900" alt="Thresholds: a higher probability threshold selects fewer windows with a higher observed hit rate."></figure>
+      <figure id="slide-8"><img loading="lazy" src="slides/slide-08.jpg" width="1600" height="900" alt="How it runs: pipelines, datasets, Watchdog, agent and operator."></figure>
+      <figure id="slide-9"><img loading="lazy" src="slides/slide-09.jpg" width="1600" height="900" alt="What an agent is made of: the trigger says when, the playbook says what, and the graph says how."></figure>
+      <figure id="slide-10"><img loading="lazy" src="slides/slide-10.jpg" width="1600" height="900" alt="Four playbooks: announce, confirm, cancel, and alert."></figure>
+      <figure id="slide-11"><img loading="lazy" src="slides/slide-11.jpg" width="1600" height="900" alt="Live demo: replay of historical forecast and auction days."></figure>
+      <figure id="slide-12"><img loading="lazy" src="slides/slide-12.jpg" width="1600" height="900" alt="Robustness, explainability and responsible AI."></figure>
+      <figure id="slide-13"><img loading="lazy" src="slides/slide-13.jpg" width="1600" height="900" alt="Impact estimates, pilot assumptions, and limitations observed in validation."></figure>
+      <figure id="slide-14"><img loading="lazy" src="slides/slide-14.jpg" width="1600" height="900" alt="What’s next: new applications, live data, and 15-minute market periods."></figure>
+      <figure id="slide-15"><img loading="lazy" src="slides/slide-15.jpg" width="1600" height="900" alt="GridSense closing slide and questions."></figure>
+    </div>
+    <nav class="controls" id="controls" aria-label="Presentation controls" hidden>
+      <button type="button" id="prev" aria-label="Previous slide">← Prev</button>
+      <span id="count" aria-live="polite"></span>
+      <button type="button" id="next" aria-label="Next slide">Next →</button>
+      <select id="jump" aria-label="Go to slide"></select>
+      <button type="button" id="full">Fullscreen</button>
+    </nav>
+  </div>
+</main>
+<script>
+const figures = [...document.querySelectorAll('figure')];
+const previous = document.querySelector('#prev');
+const next = document.querySelector('#next');
+const jump = document.querySelector('#jump');
+const deck = document.querySelector('#deck');
+const full = document.querySelector('#full');
+const count = document.querySelector('#count');
+const titles = ['GridSense','The problem','What GridSense does','The agent’s loop','Data','Model vs baseline','Thresholds','How it runs','Agent components','Playbooks','Live demo','Responsible AI','Impact and limits','What’s next','Questions'];
+let current = 0;
+titles.forEach((title, index) => jump.add(new Option((index + 1) + '. ' + title, index)));
+function show(index, writeHash = true) {
+  current = Math.min(figures.length - 1, Math.max(0, index));
+  figures.forEach((figure, position) => { figure.hidden = position !== current; });
+  count.textContent = (current + 1) + ' / ' + figures.length;
+  jump.value = current;
+  previous.disabled = current === 0;
+  next.disabled = current === figures.length - 1;
+  if (writeHash) history.replaceState(null, '', '#slide-' + (current + 1));
+}
+function readHash() {
+  const match = location.hash.match(/^#slide-(\d+)$/);
+  show(match ? Number(match[1]) - 1 : 0, false);
+}
+previous.addEventListener('click', () => show(current - 1));
+next.addEventListener('click', () => show(current + 1));
+jump.addEventListener('change', () => show(Number(jump.value)));
+window.addEventListener('hashchange', readHash);
+document.addEventListener('keydown', (event) => {
+  if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest('select, input, textarea')) return;
+  const offsets = { ArrowLeft: -1, ArrowRight: 1, PageUp: -1, PageDown: 1 };
+  if (!Object.hasOwn(offsets, event.key)) return;
+  event.preventDefault();
+  show(current + offsets[event.key]);
+});
+full.hidden = !document.fullscreenEnabled;
+full.addEventListener('click', async () => {
+  if (document.fullscreenElement) await document.exitFullscreen();
+  else await deck.requestFullscreen();
+});
+document.addEventListener('fullscreenchange', () => {
+  full.textContent = document.fullscreenElement ? 'Exit fullscreen' : 'Fullscreen';
+});
+readHash();
+document.querySelector('#controls').hidden = false;
+</script>
+</body>
+</html>
