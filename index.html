@@ -10,18 +10,19 @@
 *{box-sizing:border-box}
 body{margin:0;color:var(--ink);background:var(--page)}
 a{color:var(--blue)}
-button{font:inherit;color:var(--ink);background:white;border:1px solid var(--line);border-radius:.4rem;padding:.3rem .7rem;cursor:pointer}
+select{min-width:0;max-width:min(38vw,13rem)}
+button,select{font:inherit;color:var(--ink);background:white;border:1px solid var(--line);border-radius:.4rem;padding:.3rem .7rem;cursor:pointer}
 button:disabled{opacity:.45;cursor:default}
 :focus-visible{outline:3px solid #2365d0;outline-offset:3px}
 [hidden]{display:none!important}
-header{position:sticky;top:0;z-index:1;background:#fff;border-bottom:1px solid var(--line)}
+header{background:#fff;border-bottom:1px solid var(--line)}
 .bar,main{max-width:58rem;margin:auto;padding-inline:1rem}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:.5rem 1rem;min-height:3.5rem;flex-wrap:wrap;padding-block:.45rem}
 .brand{font-weight:750;text-decoration:none;color:var(--ink)}
 .controls{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
 .controls output{min-width:3.2rem;text-align:center;font-variant-numeric:tabular-nums}
 main{padding-block:1rem 2rem}
-section,details{background:#fff;border:1px solid var(--line);border-radius:.6rem;padding:clamp(1.1rem,4vw,2.5rem);margin-bottom:1rem;scroll-margin-top:7rem}
+section{background:#fff;border:1px solid var(--line);border-radius:.6rem;padding:clamp(1.1rem,4vw,2.5rem);margin-bottom:1rem;scroll-margin-top:7rem}
 section p:last-child,section ul:last-child,section ol:last-child{margin-bottom:0}
 section:focus{outline:none}
 .cover{border-top:5px solid var(--blue)}
@@ -34,9 +35,6 @@ p,ul,ol{margin:.65rem 0 1rem}
 li+li{margin-top:.3rem}
 .muted{color:var(--sub)}
 .lead{font-size:1.18rem}
-summary{font-weight:700;cursor:pointer}
-.toc{columns:2;padding-left:1.35rem}
-.toc li{break-inside:avoid}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
 .tile{background:#f5f8fd;border-radius:.45rem;padding:1rem}
 .tile p{margin-bottom:0}
@@ -50,23 +48,24 @@ thead{background:#edf3ff}
 .track{background:#e5edf8;border-radius:.25rem;height:.72rem;overflow:hidden}
 .fill{display:block;height:100%;width:var(--value);background:#316ccc}
 .note{border-left:3px solid #4578d4;padding:.45rem .8rem;background:#f3f7fd}
-.footer{text-align:center;color:var(--sub);font-size:.9rem}
-body.presenting main{max-width:68rem}
-body.presenting section{min-height:calc(100svh - 7rem);display:flex;flex-direction:column;justify-content:center;margin:0}
-body.presenting h2{font-size:clamp(1.75rem,4.5vw,3.2rem)}
-@media(max-width:39rem){.toc{columns:1}.grid{grid-template-columns:1fr}.controls{font-size:.9rem}.bar,main{padding-inline:.65rem}}
-@media print{header,details,.footer{display:none!important}main{max-width:none}section,section[hidden]{display:block!important;min-height:0!important;border:0;break-after:page;padding:.5rem}}
+body.deck{height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden}
+body.deck main{width:100%;max-width:68rem;height:100%;min-height:0;padding-block:.6rem}
+body.deck section{height:100%;min-height:0;display:flex;flex-direction:column;justify-content:center;overflow:hidden;margin:0}
+body.deck .slide-content{flex:none;min-width:0;overflow-wrap:anywhere}
+body.deck h2{font-size:clamp(1.55rem,3.7vw,3rem)}
+@media(max-width:39rem){.grid{grid-template-columns:1fr}.controls{font-size:.9rem}.bar,main{padding-inline:.65rem}table{table-layout:fixed;font-size:.875rem}th,td{padding:.4rem}.metric thead th:first-child{width:36%}#playbooks thead th:first-child{width:24%}#playbooks thead th:last-child{width:25%}}
+@media print{header{display:none!important}body.deck{display:block;height:auto;overflow:visible}body.deck main{height:auto;max-width:none}body.deck section,section[hidden]{display:block!important;height:auto!important;overflow:visible!important;border:0;break-after:page;padding:.5rem}body.deck .slide-content{zoom:1!important}}
 </style>
 </head>
 <body>
 <header>
   <div class="bar">
     <a class="brand" href="#overview">GridSense · SmartHack XI</a>
-    <nav class="controls" aria-label="Presentation controls">
-      <button id="previous" type="button" hidden aria-label="Previous slide">←</button>
-      <output id="position" aria-live="polite" hidden></output>
-      <button id="next" type="button" hidden aria-label="Next slide">→</button>
-      <button id="mode" type="button" hidden>Present</button>
+    <nav id="controls" class="controls" aria-label="Presentation controls" hidden>
+      <button id="previous" type="button" aria-label="Previous slide">←</button>
+      <output id="position" aria-live="polite"></output>
+      <button id="next" type="button" aria-label="Next slide">→</button>
+      <select id="jump" aria-label="Jump to slide"></select>
     </nav>
   </div>
 </header>
@@ -77,12 +76,6 @@ body.presenting h2{font-size:clamp(1.75rem,4.5vw,3.2rem)}
   <p class="lead">GridSense forecasts low electricity prices and turns them into proposals that an operator can review and check against the auction result.</p>
   <p class="muted">Mihnea Cucu · Izabela Jilavu · Roland Teslaru · Andrei Oprescu · Ștefan Militaru<br>8 November 2026</p>
 </section>
-<details id="contents" open>
-  <summary>Contents</summary>
-  <ol class="toc">
-    <li><a href="#overview">GridSense</a></li><li><a href="#problem">The problem</a></li><li><a href="#workflow">What GridSense does</a></li><li><a href="#loop">The agent’s loop</a></li><li><a href="#data">Data</a></li><li><a href="#models">Model validation</a></li><li><a href="#thresholds">Decision thresholds</a></li><li><a href="#system">How it runs</a></li><li><a href="#agent">Trigger, playbook, graph</a></li><li><a href="#playbooks">The four playbooks</a></li><li><a href="#demo">Live demo</a></li><li><a href="#oversight">Oversight and explainability</a></li><li><a href="#impact">Impact and limits</a></li><li><a href="#next-steps">What’s next</a></li><li><a href="#closing">Questions</a></li>
-  </ol>
-</details>
 <section id="problem"><p class="eyebrow">02 · Problem</p><h2>Customers need time to shift their consumption</h2><p>To move washing, charging or heating to a cheaper hour, customers need at least 12 hours of notice. PPC wants to send that notice before the day-ahead auction clears. A window that turns out to be expensive can lead to a cancellation and make the next offer less credible.</p></section>
 <section id="workflow"><p class="eyebrow">03 · Workflow</p><h2>From the morning forecast to the auction result</h2><div class="grid">
 <div class="tile"><h3>Forecast at 10:00</h3><p>Estimate the chance of a price at or below €20/MWh, hour by hour, for the next seven days.</p></div>
@@ -112,51 +105,65 @@ body.presenting h2{font-size:clamp(1.75rem,4.5vw,3.2rem)}
 <section id="impact"><p class="eyebrow">13 · Impact and limits</p><h2>Estimate the value of shifting consumption</h2><p>The pilot assumptions are 5,000 customers and up to 11.8 MWh shifted per slot. The app estimates the value from the difference between the slot price and the evening P50 price.</p><p class="note">These are scenario estimates. The price model overestimated some cheap hours, and aiming to fill the entire monthly allowance raised the estimated cancellation rate in validation.</p></section>
 <section id="next-steps"><p class="eyebrow">14 · What’s next</p><h2>Connect live feeds and add 15-minute forecasts</h2><p>The next steps are live ENTSO-E and weather feeds and support for 15-minute market periods. The trigger and playbook design can also be extended to meter anomalies, asset health and trading desk alerts.</p></section>
 <section id="closing"><p class="eyebrow">15 · Questions</p><h2>Plan the offer earlier. Check it after the auction.</h2><p>GridSense gives PPC a forecast, a recorded decision and a way to verify the outcome.</p><p><a id="pdf" href="gridsense-smarthack-pitch.pdf">Original pitch PDF</a></p></section>
-<p class="footer">GridSense · SmartHack XI · 24h to Power PPC</p>
 </main>
 <script>
 (() => {
   const slides = Array.from(document.querySelectorAll('main > section'));
-  const controls = ['previous','position','next','mode'].map(id => document.getElementById(id));
-  const [previous, position, next, mode] = controls;
-  const contents = document.getElementById('contents');
-  let presenting = false;
+  const [controls, previous, next, position, jump] = ['controls', 'previous', 'next', 'position', 'jump']
+    .map(id => document.getElementById(id));
   let current = 0;
-  const fromHash = () => slides.findIndex(slide => '#' + slide.id === location.hash);
-  function render(index, updateHash = true) {
+  const content = slides.map((slide, index) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'slide-content';
+    wrapper.append(...slide.childNodes);
+    slide.append(wrapper);
+    jump.add(new Option((index + 1) + '. ' + slide.querySelector('h1, h2').textContent, index));
+    return wrapper;
+  });
+  function fit() {
+    const slide = slides[current];
+    const wrapper = content[current];
+    const style = getComputedStyle(slide);
+    const available = slide.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    wrapper.style.zoom = '1';
+    let scale = 1;
+    for (let i = 0; i < 4; i++) {
+      const height = wrapper.getBoundingClientRect().height;
+      if (height <= available + 1) break;
+      scale *= available / height;
+      wrapper.style.zoom = String(scale);
+    }
+  }
+  function render(index, writeHash = true) {
     current = Math.max(0, Math.min(slides.length - 1, index));
-    slides.forEach((slide, i) => { slide.hidden = presenting && i !== current; });
-    document.body.classList.toggle('presenting', presenting);
-    contents.hidden = presenting;
-    controls.slice(0, 3).forEach(control => { control.hidden = !presenting; });
-    mode.textContent = presenting ? 'Read all' : 'Present';
+    slides.forEach((slide, i) => { slide.hidden = i !== current; });
     position.textContent = (current + 1) + ' / ' + slides.length;
+    jump.value = String(current);
     previous.disabled = current === 0;
     next.disabled = current === slides.length - 1;
-    if (updateHash) history.replaceState(null, '', '#' + slides[current].id);
-    if (presenting) window.scrollTo(0, 0);
+    if (writeHash) history.replaceState(null, '', '#' + slides[current].id);
+    fit();
   }
-  mode.hidden = false;
-  mode.addEventListener('click', () => {
-    presenting = !presenting;
-    if (presenting) {
-      const visible = slides.findLastIndex(slide => slide.getBoundingClientRect().top <= 110);
-      render(Math.max(0, visible));
-    } else {
-      render(current);
-      slides[current].scrollIntoView();
-    }
-  });
+  function readHash() {
+    const direct = slides.findIndex(slide => '#' + slide.id === location.hash);
+    const numbered = /^#slide-(\d+)$/.exec(location.hash);
+    render(direct >= 0 ? direct : numbered ? Number(numbered[1]) - 1 : 0, false);
+  }
+  document.body.classList.add('deck');
+  controls.hidden = false;
+  readHash();
   previous.addEventListener('click', () => render(current - 1));
   next.addEventListener('click', () => render(current + 1));
-  addEventListener('hashchange', () => { if (presenting) render(fromHash(), false); });
+  jump.addEventListener('change', () => render(Number(jump.value)));
+  addEventListener('resize', fit);
+  addEventListener('hashchange', readHash);
   addEventListener('keydown', event => {
-    if (!presenting || event.altKey || event.metaKey || event.ctrlKey || event.shiftKey) return;
-    if (event.key === 'Escape') { mode.click(); return; }
-    if (['ArrowLeft','PageUp','ArrowRight','PageDown'].includes(event.key)) {
-      event.preventDefault();
-      render(current + (['ArrowLeft','PageUp'].includes(event.key) ? -1 : 1));
-    }
+    if (event.altKey || event.metaKey || event.ctrlKey || event.shiftKey ||
+        (event.target instanceof Element && event.target.closest('select, input, textarea'))) return;
+    const offsets = { ArrowLeft: -1, PageUp: -1, ArrowRight: 1, PageDown: 1 };
+    if (!Object.hasOwn(offsets, event.key) && event.key !== 'Home' && event.key !== 'End') return;
+    event.preventDefault();
+    render(event.key === 'Home' ? 0 : event.key === 'End' ? slides.length - 1 : current + offsets[event.key]);
   });
 })();
 </script>
