@@ -3,115 +3,162 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="GridSense SmartHack XI pitch for the PPC Energie challenge.">
-<title>GridSense · SmartHack XI Pitch</title>
-<link rel="preload" href="slides/slide-01.jpg" as="image">
+<meta name="description" content="GridSense · SmartHack XI presentation for the PPC Energie challenge.">
+<title>GridSense · SmartHack XI</title>
 <style>
-:root{color-scheme:dark;font:16px/1.45 system-ui,sans-serif;--border:#26354a;--muted:#b2c2d8;--blue:#2563eb}
+:root{color-scheme:light;--ink:#14243c;--sub:#42556c;--blue:#1c57bd;--line:#d8e1ee;--page:#f0f4f9;font:16px/1.55 system-ui,sans-serif}
 *{box-sizing:border-box}
-body{margin:0;background:#0b1423;color:#f4f7fc}
-header,main{width:min(100% - 2rem,92rem);margin-inline:auto}
-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.05rem 0}
-.brand{display:flex;align-items:center;gap:.65rem}
-.mark{display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:.55rem;background:var(--blue);font-size:1.3rem}
-h1{font-size:1.05rem;line-height:1.1;margin:0}
-.brand small{color:var(--muted);font-size:.78rem}
-a,button,select{color:inherit;font:inherit}
-a.download,button,select{border:1px solid var(--border);border-radius:.5rem;padding:.5rem .75rem;background:#142238}
-a.download{text-decoration:none;white-space:nowrap}
-a:hover,button:hover,select:hover{border-color:#6d9fff}
-:focus-visible{outline:2px solid #90b9ff;outline-offset:3px}
-button,select{cursor:pointer}
-button:disabled{opacity:.4;cursor:default}
-.deck{margin:auto;width:min(100%,calc((100svh - 9rem) * 16 / 9));min-width:min(100%,36rem)}
-figure{margin:0 0 1rem;line-height:0}
-figure img{width:100%;height:auto;display:block;border-radius:.65rem;border:1px solid var(--border);background:#e9edf5}
-.controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.5rem;margin:1rem 0}
-.controls[hidden],figure[hidden]{display:none}
-.controls span{font-variant-numeric:tabular-nums;color:var(--muted);min-width:4rem;text-align:center}
-.deck:fullscreen{display:grid;align-content:center;padding:1rem;width:100%;background:#0b1423}
-.deck:fullscreen figure img{height:min(100%,calc(100dvh - 6rem));object-fit:contain;border:0}
-@media(max-width:38rem){header,main{width:calc(100% - 1rem)}.controls{font-size:.86rem}.controls select{max-width:45vw}.controls button{padding:.45rem}}
+body{margin:0;color:var(--ink);background:var(--page)}
+a{color:var(--blue)}
+button{font:inherit;color:var(--ink);background:white;border:1px solid var(--line);border-radius:.4rem;padding:.3rem .7rem;cursor:pointer}
+button:disabled{opacity:.45;cursor:default}
+:focus-visible{outline:3px solid #2365d0;outline-offset:3px}
+[hidden]{display:none!important}
+header{position:sticky;top:0;z-index:1;background:#fff;border-bottom:1px solid var(--line)}
+.bar,main{max-width:58rem;margin:auto;padding-inline:1rem}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:.5rem 1rem;min-height:3.5rem;flex-wrap:wrap;padding-block:.45rem}
+.brand{font-weight:750;text-decoration:none;color:var(--ink)}
+.controls{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.controls output{min-width:3.2rem;text-align:center;font-variant-numeric:tabular-nums}
+main{padding-block:1rem 2rem}
+section,details{background:#fff;border:1px solid var(--line);border-radius:.6rem;padding:clamp(1.1rem,4vw,2.5rem);margin-bottom:1rem;scroll-margin-top:7rem}
+section p:last-child,section ul:last-child,section ol:last-child{margin-bottom:0}
+section:focus{outline:none}
+.cover{border-top:5px solid var(--blue)}
+.eyebrow{color:var(--blue);font-size:.83rem;letter-spacing:.09em;text-transform:uppercase;font-weight:750;margin:0 0 .55rem}
+h1,h2,h3{line-height:1.15;text-wrap:balance;margin:0 0 .7em}
+h1{font-size:clamp(2.15rem,6vw,3.8rem);letter-spacing:-.04em}
+h2{font-size:clamp(1.5rem,3.7vw,2.25rem);letter-spacing:-.025em}
+h3{font-size:1.1rem}
+p,ul,ol{margin:.65rem 0 1rem}
+li+li{margin-top:.3rem}
+.muted{color:var(--sub)}
+.lead{font-size:1.18rem}
+summary{font-weight:700;cursor:pointer}
+.toc{columns:2;padding-left:1.35rem}
+.toc li{break-inside:avoid}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.tile{background:#f5f8fd;border-radius:.45rem;padding:1rem}
+.tile p{margin-bottom:0}
+.table-wrap{overflow:auto}
+table{border-collapse:collapse;width:100%;text-align:left}
+th,td{border-bottom:1px solid var(--line);padding:.55rem .65rem;vertical-align:top}
+thead{background:#edf3ff}
+.metric td:not(:first-child),.metric th:not(:first-child){text-align:right}
+.chart{padding:0;list-style:none}
+.chart li{display:grid;grid-template-columns:3.1rem minmax(3rem,1fr) 7.7rem;align-items:center;gap:.6rem;font-variant-numeric:tabular-nums;margin:.5rem 0}
+.track{background:#e5edf8;border-radius:.25rem;height:.72rem;overflow:hidden}
+.fill{display:block;height:100%;width:var(--value);background:#316ccc}
+.note{border-left:3px solid #4578d4;padding:.45rem .8rem;background:#f3f7fd}
+.footer{text-align:center;color:var(--sub);font-size:.9rem}
+body.presenting main{max-width:68rem}
+body.presenting section{min-height:calc(100svh - 7rem);display:flex;flex-direction:column;justify-content:center;margin:0}
+body.presenting h2{font-size:clamp(1.75rem,4.5vw,3.2rem)}
+@media(max-width:39rem){.toc{columns:1}.grid{grid-template-columns:1fr}.controls{font-size:.9rem}.bar,main{padding-inline:.65rem}}
+@media print{header,details,.footer{display:none!important}main{max-width:none}section,section[hidden]{display:block!important;min-height:0!important;border:0;break-after:page;padding:.5rem}}
 </style>
 </head>
 <body>
 <header>
-  <div class="brand"><span class="mark" aria-hidden="true">ϟ</span><div><h1>GridSense</h1><small>SmartHack XI · PPC Energie</small></div></div>
-  <a class="download" href="gridsense-smarthack-pitch.pdf" download>Download PDF</a>
-</header>
-<main aria-label="GridSense pitch deck">
-  <div class="deck" id="deck">
-    <div id="slides">
-      <figure id="slide-1"><img src="slides/slide-01.jpg" width="1600" height="900" alt="GridSense: Free electricity hours, announced before the auction."></figure>
-      <figure id="slide-2"><img loading="lazy" src="slides/slide-02.jpg" width="1600" height="900" alt="The problem: Which hours can PPC promise customers as free, before the auction clears?"></figure>
-      <figure id="slide-3"><img loading="lazy" src="slides/slide-03.jpg" width="1600" height="900" alt="What GridSense does: forecast, announce, confirm or cancel, and explain."></figure>
-      <figure id="slide-4"><img loading="lazy" src="slides/slide-04.jpg" width="1600" height="900" alt="The agent’s loop: perceive, estimate, decide, act."></figure>
-      <figure id="slide-5"><img loading="lazy" src="slides/slide-05.jpg" width="1600" height="900" alt="Data: public electricity prices, archived weather forecasts, grid data and calendar features."></figure>
-      <figure id="slide-6"><img loading="lazy" src="slides/slide-06.jpg" width="1600" height="900" alt="Validation: comparison of LightGBM and the climatology baseline."></figure>
-      <figure id="slide-7"><img loading="lazy" src="slides/slide-07.jpg" width="1600" height="900" alt="Thresholds: a higher probability threshold selects fewer windows with a higher observed hit rate."></figure>
-      <figure id="slide-8"><img loading="lazy" src="slides/slide-08.jpg" width="1600" height="900" alt="How it runs: pipelines, datasets, Watchdog, agent and operator."></figure>
-      <figure id="slide-9"><img loading="lazy" src="slides/slide-09.jpg" width="1600" height="900" alt="What an agent is made of: the trigger says when, the playbook says what, and the graph says how."></figure>
-      <figure id="slide-10"><img loading="lazy" src="slides/slide-10.jpg" width="1600" height="900" alt="Four playbooks: announce, confirm, cancel, and alert."></figure>
-      <figure id="slide-11"><img loading="lazy" src="slides/slide-11.jpg" width="1600" height="900" alt="Live demo: replay of historical forecast and auction days."></figure>
-      <figure id="slide-12"><img loading="lazy" src="slides/slide-12.jpg" width="1600" height="900" alt="Robustness, explainability and responsible AI."></figure>
-      <figure id="slide-13"><img loading="lazy" src="slides/slide-13.jpg" width="1600" height="900" alt="Impact estimates, pilot assumptions, and limitations observed in validation."></figure>
-      <figure id="slide-14"><img loading="lazy" src="slides/slide-14.jpg" width="1600" height="900" alt="What’s next: new applications, live data, and 15-minute market periods."></figure>
-      <figure id="slide-15"><img loading="lazy" src="slides/slide-15.jpg" width="1600" height="900" alt="GridSense closing slide and questions."></figure>
-    </div>
-    <nav class="controls" id="controls" aria-label="Presentation controls" hidden>
-      <button type="button" id="prev" aria-label="Previous slide">← Prev</button>
-      <span id="count" aria-live="polite"></span>
-      <button type="button" id="next" aria-label="Next slide">Next →</button>
-      <select id="jump" aria-label="Go to slide"></select>
-      <button type="button" id="full">Fullscreen</button>
+  <div class="bar">
+    <a class="brand" href="#overview">GridSense · SmartHack XI</a>
+    <nav class="controls" aria-label="Presentation controls">
+      <button id="previous" type="button" hidden aria-label="Previous slide">←</button>
+      <output id="position" aria-live="polite" hidden></output>
+      <button id="next" type="button" hidden aria-label="Next slide">→</button>
+      <button id="mode" type="button" hidden>Present</button>
     </nav>
   </div>
+</header>
+<main id="main">
+<section class="cover" id="overview" aria-labelledby="title">
+  <p class="eyebrow">PPC Energie · 24h to Power PPC</p>
+  <h1 id="title">Free electricity hours, announced before the auction</h1>
+  <p class="lead">GridSense forecasts low electricity prices and turns them into proposals that an operator can review and check against the auction result.</p>
+  <p class="muted">Mihnea Cucu · Izabela Jilavu · Roland Teslaru · Andrei Oprescu · Ștefan Militaru<br>8 November 2026</p>
+</section>
+<details id="contents" open>
+  <summary>Contents</summary>
+  <ol class="toc">
+    <li><a href="#overview">GridSense</a></li><li><a href="#problem">The problem</a></li><li><a href="#workflow">What GridSense does</a></li><li><a href="#loop">The agent’s loop</a></li><li><a href="#data">Data</a></li><li><a href="#models">Model validation</a></li><li><a href="#thresholds">Decision thresholds</a></li><li><a href="#system">How it runs</a></li><li><a href="#agent">Trigger, playbook, graph</a></li><li><a href="#playbooks">The four playbooks</a></li><li><a href="#demo">Live demo</a></li><li><a href="#oversight">Oversight and explainability</a></li><li><a href="#impact">Impact and limits</a></li><li><a href="#next-steps">What’s next</a></li><li><a href="#closing">Questions</a></li>
+  </ol>
+</details>
+<section id="problem"><p class="eyebrow">02 · Problem</p><h2>Customers need time to shift their consumption</h2><p>To move washing, charging or heating to a cheaper hour, customers need at least 12 hours of notice. PPC wants to send that notice before the day-ahead auction clears. A window that turns out to be expensive can lead to a cancellation and make the next offer less credible.</p></section>
+<section id="workflow"><p class="eyebrow">03 · Workflow</p><h2>From the morning forecast to the auction result</h2><div class="grid">
+<div class="tile"><h3>Forecast at 10:00</h3><p>Estimate the chance of a price at or below €20/MWh, hour by hour, for the next seven days.</p></div>
+<div class="tile"><h3>Propose for D+1 and D+2</h3><p>Announce windows that meet the automatic rule. Send more uncertain candidates to an operator.</p></div>
+<div class="tile"><h3>Check the auction</h3><p>Run confirmation or cancellation rules when official prices arrive.</p></div>
+<div class="tile"><h3>Explain</h3><p>Show the evidence, decision history and estimated impact for each proposal.</p></div>
+</div></section>
+<section id="loop"><p class="eyebrow">04 · Agent loop</p><h2>Perceive, estimate, decide, act</h2><ol><li><strong>Perceive.</strong> The pipelines record each forecast and the cleared day-ahead prices.</li><li><strong>Estimate.</strong> The models produce hourly probabilities and P10, P50 and P90 price estimates.</li><li><strong>Decide.</strong> Rules select windows, with review for uncertain proposals.</li><li><strong>Act.</strong> The prototype records announcements and outcomes in the calendar and prepares messages and alerts.</li></ol></section>
+<section id="data"><p class="eyebrow">05 · Data</p><h2>Build each forecast from information available at issue time</h2><ul><li><strong>Prices.</strong> ENTSO-E Romanian day-ahead prices. For 15-minute market periods, the hourly price is the mean of the four quarters.</li><li><strong>Weather.</strong> Archived Open-Meteo forecast runs at the relevant lead time for four locations in Romania.</li><li><strong>Grid and calendar.</strong> Load forecasts, holidays, weekends and past price indicators.</li></ul><p class="note">Training ran from January 2023 to February 2025. Validation covered March to September 2025 and included 35,945 forecast rows. March to October 2026 was reserved for the final test.</p></section>
+<section id="models"><p class="eyebrow">06 · Validation</p><h2>LightGBM improves on historical frequencies</h2><p>Climatology uses historical frequencies by month, weekday and hour. The oracle ranks windows with hindsight and serves as a reference.</p>
+<div class="table-wrap"><table class="metric"><thead><tr><th scope="col">Metric for ≤ €20/MWh</th><th scope="col">Climatology</th><th scope="col">LightGBM</th><th scope="col">Oracle</th></tr></thead><tbody>
+<tr><th scope="row">PR-AUC</th><td>0.705</td><td>0.746</td><td>—</td></tr><tr><th scope="row">PR-AUC at D+1</th><td>0.705</td><td>0.764</td><td>—</td></tr><tr><th scope="row">Brier score ↓</th><td>0.0855</td><td>0.0779</td><td>—</td></tr><tr><th scope="row">Precision at 70 hours/month</th><td>0.753</td><td>0.792</td><td>0.945</td></tr></tbody></table></div><p class="muted">Source: GridSense validation reports, March to September 2025.</p></section>
+<section id="thresholds"><p class="eyebrow">07 · Thresholds</p><h2>Higher confidence means fewer windows</h2><p>In validation, a window counted as a hit when all its hours cleared at or below €20/MWh. Raising the threshold increased the share of hits and reduced the number of candidates.</p><ul class="chart" aria-label="Share of windows that held, by probability threshold">
+<li><strong>0.5</strong><span class="track" aria-hidden="true"><span class="fill" style="--value:61%"></span></span><span>61% · 862 slots</span></li>
+<li><strong>0.6</strong><span class="track" aria-hidden="true"><span class="fill" style="--value:65%"></span></span><span>65% · 746 slots</span></li>
+<li><strong>0.7</strong><span class="track" aria-hidden="true"><span class="fill" style="--value:71%"></span></span><span>71% · 630 slots</span></li>
+<li><strong>0.8</strong><span class="track" aria-hidden="true"><span class="fill" style="--value:80%"></span></span><span>80% · 502 slots</span></li></ul></section>
+<section id="system"><p class="eyebrow">08 · Architecture</p><h2>One flow from a new dataset to the operator</h2><p>Scheduled Python pipelines write forecasts and cleared prices to Parquet. Watchdog evaluates triggers on new rows. The agent runs a checkpointed LangGraph workflow per match, and the operator can inspect and resolve cases in the React app.</p><p class="muted">NestJS, BullMQ on Redis, Postgres and React.</p></section>
+<section id="agent"><p class="eyebrow">09 · Agent structure</p><h2>Trigger, playbook, graph</h2><ul><li><strong>Trigger:</strong> when to act, based on dataset conditions.</li><li><strong>Playbook:</strong> what action to take, such as announcing, confirming, cancelling or alerting.</li><li><strong>Graph:</strong> how the agent loads context, decides, analyses, requests approval when needed and records the outcome.</li></ul></section>
+<section id="playbooks"><p class="eyebrow">10 · Playbooks</p><h2>Four ways to act on an event</h2><div class="table-wrap"><table><thead><tr><th scope="col">Playbook</th><th scope="col">Rule</th><th scope="col">Review</th></tr></thead><tbody>
+<tr><th scope="row">Announce</th><td>At least three consecutive hours at ≥ 0.8 can qualify as Likely. A candidate at ≥ 0.7 can qualify as Possible.</td><td>Possible requires approval.</td></tr>
+<tr><th scope="row">Confirm</th><td>The auction trigger detects prices at or below €0/MWh.</td><td>Automatic.</td></tr>
+<tr><th scope="row">Cancel</th><td>An announced slot overlaps a forecast miss or a qualifying drop in the forecast.</td><td>Operator approval.</td></tr>
+<tr><th scope="row">Alert</th><td>Flag conditions such as degraded input data.</td><td>Internal alert.</td></tr></tbody></table></div></section>
+<section id="demo"><p class="eyebrow">11 · Live demo</p><h2>Follow one window through the replay</h2><ol><li>Issue the 10:00 forecast in the historical replay, which starts on 24 April 2025.</li><li>Inspect the <em>Zero-cost window</em> match in Activity.</li><li>Open a <em>Possible</em> case, read the evidence and approve it.</li><li>Load the cleared prices and inspect the outcome for the same window.</li></ol></section>
+<section id="oversight"><p class="eyebrow">12 · Oversight</p><h2>Keep the decision trace visible</h2><p>The operator can inspect the rule, the numbers it used and the steps in each case. Claude can explain the evidence and answer questions through read-only tools. The rule determines the action and the operator handles decisions that require approval. Template explanations are available when Claude is unavailable.</p></section>
+<section id="impact"><p class="eyebrow">13 · Impact and limits</p><h2>Estimate the value of shifting consumption</h2><p>The pilot assumptions are 5,000 customers and up to 11.8 MWh shifted per slot. The app estimates the value from the difference between the slot price and the evening P50 price.</p><p class="note">These are scenario estimates. The price model overestimated some cheap hours, and aiming to fill the entire monthly allowance raised the estimated cancellation rate in validation.</p></section>
+<section id="next-steps"><p class="eyebrow">14 · What’s next</p><h2>Connect live feeds and add 15-minute forecasts</h2><p>The next steps are live ENTSO-E and weather feeds and support for 15-minute market periods. The trigger and playbook design can also be extended to meter anomalies, asset health and trading desk alerts.</p></section>
+<section id="closing"><p class="eyebrow">15 · Questions</p><h2>Plan the offer earlier. Check it after the auction.</h2><p>GridSense gives PPC a forecast, a recorded decision and a way to verify the outcome.</p><p><a id="pdf" href="gridsense-smarthack-pitch.pdf">Original pitch PDF</a></p></section>
+<p class="footer">GridSense · SmartHack XI · 24h to Power PPC</p>
 </main>
 <script>
-const figures = [...document.querySelectorAll('figure')];
-const previous = document.querySelector('#prev');
-const next = document.querySelector('#next');
-const jump = document.querySelector('#jump');
-const deck = document.querySelector('#deck');
-const full = document.querySelector('#full');
-const count = document.querySelector('#count');
-const titles = ['GridSense','The problem','What GridSense does','The agent’s loop','Data','Model vs baseline','Thresholds','How it runs','Agent components','Playbooks','Live demo','Responsible AI','Impact and limits','What’s next','Questions'];
-let current = 0;
-titles.forEach((title, index) => jump.add(new Option((index + 1) + '. ' + title, index)));
-function show(index, writeHash = true) {
-  current = Math.min(figures.length - 1, Math.max(0, index));
-  figures.forEach((figure, position) => { figure.hidden = position !== current; });
-  count.textContent = (current + 1) + ' / ' + figures.length;
-  jump.value = current;
-  previous.disabled = current === 0;
-  next.disabled = current === figures.length - 1;
-  if (writeHash) history.replaceState(null, '', '#slide-' + (current + 1));
-}
-function readHash() {
-  const match = location.hash.match(/^#slide-(\d+)$/);
-  show(match ? Number(match[1]) - 1 : 0, false);
-}
-previous.addEventListener('click', () => show(current - 1));
-next.addEventListener('click', () => show(current + 1));
-jump.addEventListener('change', () => show(Number(jump.value)));
-window.addEventListener('hashchange', readHash);
-document.addEventListener('keydown', (event) => {
-  if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest('select, input, textarea')) return;
-  const offsets = { ArrowLeft: -1, ArrowRight: 1, PageUp: -1, PageDown: 1 };
-  if (!Object.hasOwn(offsets, event.key)) return;
-  event.preventDefault();
-  show(current + offsets[event.key]);
-});
-full.hidden = !document.fullscreenEnabled;
-full.addEventListener('click', async () => {
-  if (document.fullscreenElement) await document.exitFullscreen();
-  else await deck.requestFullscreen();
-});
-document.addEventListener('fullscreenchange', () => {
-  full.textContent = document.fullscreenElement ? 'Exit fullscreen' : 'Fullscreen';
-});
-readHash();
-document.querySelector('#controls').hidden = false;
+(() => {
+  const slides = Array.from(document.querySelectorAll('main > section'));
+  const controls = ['previous','position','next','mode'].map(id => document.getElementById(id));
+  const [previous, position, next, mode] = controls;
+  const contents = document.getElementById('contents');
+  let presenting = false;
+  let current = 0;
+  const fromHash = () => slides.findIndex(slide => '#' + slide.id === location.hash);
+  function render(index, updateHash = true) {
+    current = Math.max(0, Math.min(slides.length - 1, index));
+    slides.forEach((slide, i) => { slide.hidden = presenting && i !== current; });
+    document.body.classList.toggle('presenting', presenting);
+    contents.hidden = presenting;
+    controls.slice(0, 3).forEach(control => { control.hidden = !presenting; });
+    mode.textContent = presenting ? 'Read all' : 'Present';
+    position.textContent = (current + 1) + ' / ' + slides.length;
+    previous.disabled = current === 0;
+    next.disabled = current === slides.length - 1;
+    if (updateHash) history.replaceState(null, '', '#' + slides[current].id);
+    if (presenting) window.scrollTo(0, 0);
+  }
+  mode.hidden = false;
+  mode.addEventListener('click', () => {
+    presenting = !presenting;
+    if (presenting) {
+      const visible = slides.findLastIndex(slide => slide.getBoundingClientRect().top <= 110);
+      render(Math.max(0, visible));
+    } else {
+      render(current);
+      slides[current].scrollIntoView();
+    }
+  });
+  previous.addEventListener('click', () => render(current - 1));
+  next.addEventListener('click', () => render(current + 1));
+  addEventListener('hashchange', () => { if (presenting) render(fromHash(), false); });
+  addEventListener('keydown', event => {
+    if (!presenting || event.altKey || event.metaKey || event.ctrlKey || event.shiftKey) return;
+    if (event.key === 'Escape') { mode.click(); return; }
+    if (['ArrowLeft','PageUp','ArrowRight','PageDown'].includes(event.key)) {
+      event.preventDefault();
+      render(current + (['ArrowLeft','PageUp'].includes(event.key) ? -1 : 1));
+    }
+  });
+})();
 </script>
 </body>
 </html>
